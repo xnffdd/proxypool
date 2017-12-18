@@ -69,7 +69,7 @@ class Plugin(object):
                                                                                 error=error))
 
     def _need_retry(self):
-        self.change_self_proxy()
+        self._change_self_proxy()
         raise Exception('retry spider plugin({plugin})...'.format(plugin=self.name))
 
 
