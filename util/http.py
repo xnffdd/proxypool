@@ -10,7 +10,6 @@ def headers(**kw):
         'accept-encoding': "gzip, deflate",
         'accept-language': "zh-CN,zh;q=0.9",
         'cache-control': "no-cache",
-        'connection': "closed",
         'pragma': "no-cache",
         'upgrade-insecure-requests': "1",
         'user-agent': user_agent(),

@@ -23,7 +23,7 @@ class Proxy(Plugin):
         self.protocol = PROXY_PROTOCOL_HTTP
         self.anonymity = PROXY_ANONYMITY_HIGH_ANONYMOUS
 
-        self.host = '/www.xicidaili.com'
+        self.host = 'www.xicidaili.com'
         self.url_template = 'http://www.xicidaili.com/nn/{page}/'
         self.re_ip_pattern = re.compile(r"<td>(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})</td>")
         self.re_port_pattern = re.compile(r"<td>(\d{1,5})</td>")
