@@ -1,7 +1,7 @@
 # proxypool
 
-API help
-'''
+## API instruction
+```
 {
   "http api": [
     {
@@ -86,4 +86,26 @@ API help
     }
   ]
 }
-'''
+```
+
+## /get
+### response example
+```
+{
+  "data": {
+    "anonymity": "high_anonymous", 
+    "check_time": "2017-12-18 10:49:04", 
+    "country": "CN", 
+    "export_address": [
+      "111.155.116.229"
+    ], 
+    "from": "西刺代理", 
+    "grab_time": "2017-12-18 10:44:15", 
+    "host": "111.155.116.229", 
+    "port": "8123", 
+    "protocol": "http", 
+    "response_time": 7.54
+  }, 
+  "ret": 0
+}
+```
