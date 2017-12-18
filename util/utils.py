@@ -23,7 +23,7 @@ def load_object(path):
 
 
 def get_current_time_str():
-    return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    return datetime2str(datetime.datetime.now())
 
 
 def datetime2str(dt):
