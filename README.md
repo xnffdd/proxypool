@@ -89,7 +89,6 @@
 ```
 
 ## /get
-### response example
 ```
 {
   "data": {
