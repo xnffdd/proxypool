@@ -38,7 +38,7 @@ class Proxy(Plugin):
             if rp.status_code == 521:
                 self._set_cookies(rp.text)
                 self._log(logger, 'extract data error', full_url, 'response javascript code')
-                self._need_retry()
+                self._need_retry(switch_proxy=False)
         except Exception as e:
             self._log(logger, 'request error', full_url, str(e))
             self._need_retry()
