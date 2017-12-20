@@ -11,7 +11,7 @@
 ## 系统架构
 
 
-## Http接口
+## HTTP接口
 
 ### 1. 获取单个可用IP
 
@@ -19,7 +19,8 @@
 
 URL|http://localhost:9999/get
 :---|:---
-http请求方式|GET
+HTTP请求方式|GET
+方法返回|JSON
 
 ##### 请求参数（bodyParam）
 
@@ -73,7 +74,7 @@ anonymity|string|否|urlParam|代理匿名性，transparent/anonymous/high_anony
 
 URL|http://localhost:9999/get_all
 :---|:---
-http请求方式|GET
+HTTP请求方式|GET
 方法返回|JSON
 
 ##### 请求参数（bodyParam）
