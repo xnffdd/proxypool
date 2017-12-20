@@ -1,174 +1,138 @@
 # proxypool
 
-## API instruction
+自建免费代理IP池
+
+## 功能
+
+- 自动爬取互联网上公开的免费代理IP（目前已支持西刺代理、快代理、IP181）
+- 周期性验证代理IP有效性
+- 提供http接口获取可用IP
+
+## 系统架构
+
+
+## Http接口
+
+### 1. 获取单个可用IP
+
+##### 基本信息
+
+URL|http://localhost:9999/get
+:---|:---
+http请求方式|GET
+
+##### 请求参数（bodyParam）
+
+参数名|类型|必填|参数位置|描述|默认值
+---|---|---|---|---|---
+check_in_hour|float|否|urlParam|代理最后验证时间（小时）以内|24
+response_time_in_second|float|否|urlParam|代理响应时间（秒）以内|null
+protocol|string|否|urlParam|代理网络协议，http/https|null
+anonymity|string|否|urlParam|代理匿名性，transparent/anonymous/high_anonymous|null
+
+##### 请求示例（Python示例）
+
+```
+    #!/usr/bin/env python3
+    # -*- coding: utf-8 -*-
+
+    import requests
+
+    url = "http://localhost:9999/get"
+    querystring = {"anonymity":"high_anonymous","response_time_in_second":"1.5"}
+    response = requests.request("GET", url, params=querystring)
+
+    print(response.json())
+```
+
+##### JSON返回示例
+
 ```
 {
-  "http api": [
-    {
-      "arguments": [
-        {
-          "default": 24, 
-          "description": "the check time(hours) within now", 
-          "name": "check_in_hour", 
-          "required": false, 
-          "type": "float"
-        }, 
-        {
-          "default": null, 
-          "description": "proxy protocol, ('http', 'https')", 
-          "name": "protocol", 
-          "required": false, 
-          "type": "string"
-        }, 
-        {
-          "default": null, 
-          "description": "proxy anonymity, ('transparent', 'anonymous', 'high_anonymous')", 
-          "name": "anonymity", 
-          "required": false, 
-          "type": "string"
-        }, 
-        {
-          "default": null, 
-          "description": "the response time(seconds) within", 
-          "name": "response_time_in_second", 
-          "required": false, 
-          "type": "float"
-        }
-      ], 
-      "description": "get an usable proxy", 
-      "method": "GET", 
-      "return": {
-        "data": "the return data", 
-        "msg": "error message", 
-        "ret": "the return code, 0 means success"
-      }, 
-      "url": "/get"
-    }, 
-    {
-      "arguments": [
-        {
-          "default": 24, 
-          "description": "the check time(hours) within now", 
-          "name": "check_in_hour", 
-          "required": false, 
-          "type": "float"
-        }, 
-        {
-          "default": null, 
-          "description": "proxy protocol, ('http', 'https')", 
-          "name": "protocol", 
-          "required": false, 
-          "type": "string"
-        }, 
-        {
-          "default": null, 
-          "description": "proxy anonymity, ('transparent', 'anonymous', 'high_anonymous')", 
-          "name": "anonymity", 
-          "required": false, 
-          "type": "string"
-        }, 
-        {
-          "default": null, 
-          "description": "the response time(seconds) within", 
-          "name": "response_time_in_second", 
-          "required": false, 
-          "type": "float"
-        }
-      ], 
-      "description": "get all usable proxies", 
-      "method": "GET", 
-      "return": {
-        "data": "the return data", 
-        "msg": "error message", 
-        "ret": "the return code, 0 means success"
-      }, 
-      "url": "/get_all"
+    "ret": 0,
+    "data": {
+        "anonymity": "high_anonymous",
+        "check_time": "2017-12-20 13:55:17",
+        "country": "CN",
+        "export_address": [
+            "120.25.253.234"
+        ],
+        "from": "快代理",
+        "grab_time": "2017-12-20 13:54:55",
+        "host": "120.25.253.234",
+        "port": "8118",
+        "protocol": "http",
+        "response_time": 1.45
     }
-  ]
 }
 ```
 
-## /get
+### 2. 获取全部可用IP
+
+##### 基本信息
+
+URL|http://localhost:9999/get_all
+:---|:---
+http请求方式|GET
+方法返回|JSON
+
+##### 请求参数（bodyParam）
+
+参数名|类型|必填|参数位置|描述|默认值
+---|---|---|---|---|---
+check_in_hour|float|否|urlParam|代理最后验证时间（小时）以内|24
+response_time_in_second|float|否|urlParam|代理响应时间（秒）以内|null
+protocol|string|否|urlParam|代理网络协议，http/https|null
+anonymity|string|否|urlParam|代理匿名性，transparent/anonymous/high_anonymous|null
+
+##### 请求示例（Python示例）
+
+```
+    #!/usr/bin/env python3
+    # -*- coding: utf-8 -*-
+
+    import requests
+
+    url = "http://localhost:9999/get_all"
+    querystring = {"anonymity":"high_anonymous","response_time_in_second":"1.5","protocol":"https"}
+
+    print(response.json())
+```
+
+##### JSON返回示例
+
 ```
 {
-  "data": {
-    "anonymity": "high_anonymous", 
-    "check_time": "2017-12-18 10:49:04", 
-    "country": "CN", 
-    "export_address": [
-      "111.155.116.229"
-    ], 
-    "from": "西刺代理", 
-    "grab_time": "2017-12-18 10:44:15", 
-    "host": "111.155.116.229", 
-    "port": "8123", 
-    "protocol": "http", 
-    "response_time": 7.54
-  }, 
-  "ret": 0
-}
-```
-## /get_all/?anonymity=high_anonymous&response_time_in_second=1
-```
-{
-  "data": [
-    {
-      "anonymity": "high_anonymous", 
-      "check_time": "2017-12-18 16:28:27", 
-      "country": "CN", 
-      "export_address": [
-        "59.110.62.128"
-      ], 
-      "from": "快代理", 
-      "grab_time": "2017-12-14 15:08:39", 
-      "host": "59.110.62.128", 
-      "port": "8118", 
-      "protocol": "http", 
-      "response_time": 0.92
-    }, 
-    {
-      "anonymity": "high_anonymous", 
-      "check_time": "2017-12-18 10:49:22", 
-      "country": "CN", 
-      "export_address": [
-        "120.27.10.38"
-      ], 
-      "from": "快代理", 
-      "grab_time": "2017-12-14 18:24:11", 
-      "host": "120.27.10.38", 
-      "port": "8090", 
-      "protocol": "http", 
-      "response_time": 0.63
-    }, 
-    {
-      "anonymity": "high_anonymous", 
-      "check_time": "2017-12-18 10:49:09", 
-      "country": "CN", 
-      "export_address": [
-        "123.118.1.198"
-      ], 
-      "from": "西刺代理", 
-      "grab_time": "2017-12-18 10:44:15", 
-      "host": "123.118.1.198", 
-      "port": "8118", 
-      "protocol": "http", 
-      "response_time": 0.8
-    }, 
-    {
-      "anonymity": "high_anonymous", 
-      "check_time": "2017-12-18 10:49:04", 
-      "country": "CN", 
-      "export_address": [
-        "59.34.204.60"
-      ], 
-      "from": "西刺代理", 
-      "grab_time": "2017-12-18 10:44:18", 
-      "host": "59.34.204.60", 
-      "port": "808", 
-      "protocol": "http", 
-      "response_time": 0.74
-    }
-  ], 
-  "ret": 0
+    "ret": 0,
+    "data": [
+        {
+            "anonymity": "high_anonymous",
+            "check_time": "2017-12-20 14:10:25",
+            "country": "CN",
+            "export_address": [
+                "118.114.77.47"
+            ],
+            "from": "西刺代理",
+            "grab_time": "2017-12-20 14:09:36",
+            "host": "118.114.77.47",
+            "port": "8080",
+            "protocol": "https",
+            "response_time": 1.41
+        },
+        {
+            "anonymity": "high_anonymous",
+            "check_time": "2017-12-20 13:09:40",
+            "country": "CN",
+            "export_address": [
+                "119.29.178.21"
+            ],
+            "from": "西刺代理",
+            "grab_time": "2017-12-14 16:17:52",
+            "host": "119.29.178.21",
+            "port": "8118",
+            "protocol": "https",
+            "response_time": 1.11
+        }
+    ]
 }
 ```
