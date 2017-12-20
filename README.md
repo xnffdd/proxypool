@@ -10,6 +10,7 @@
 
 ## 系统架构
 
+![系统架构](https://raw.githubusercontent.com/lsdir/proxypool/master/image/architecture.png)
 
 ## HTTP接口
 
