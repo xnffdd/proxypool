@@ -95,6 +95,7 @@ anonymity|string|否|urlParam|代理匿名性，transparent/anonymous/high_anony
 
     url = "http://localhost:9999/get_all"
     querystring = {"anonymity":"high_anonymous","response_time_in_second":"1.5","protocol":"https"}
+    response = requests.request("GET", url, params=querystring)
 
     print(response.json())
 ```
