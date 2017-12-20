@@ -39,7 +39,6 @@ class Plugin(object):
         self.cur_proxy = None
         self.protocol = None
         self.anonymity = None
-        self.session = requests.session()
 
     def start(self):
         raise NotImplemented
@@ -62,6 +61,8 @@ class Plugin(object):
             logger.info(
                 'switched spider plugin(%s) self proxy to Proxy(protocol: %s, host: %s, port: %s)' % (
                     self.name, _protocol, _host, _port))
+            break
+        logger.info('spider plugin(%s) has no proxy available for switch' % self.name)
 
     def _log(self, _logger, msg, url, error):
         _logger.error(

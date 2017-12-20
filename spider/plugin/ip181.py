@@ -5,6 +5,7 @@ import re
 import logging
 
 import retrying
+import requests
 
 from config import SPIDER_MAX_ATTEMPT_NUMBER
 from util.http import headers
@@ -27,11 +28,17 @@ class Proxy(Plugin):
         self.re_ip_port_pattern = re.compile(
             r"<tr>\s+<td>(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})</td>\s+<td>(\d{1,5})</td>", re.I)
 
+        self._headers = headers(host=self.host)
+
     @retrying.retry(stop_max_attempt_number=SPIDER_MAX_ATTEMPT_NUMBER)
     def _extract_proxy(self):
         try:
             full_url = self.url_template
-            rp = self.session.get(url=full_url, headers=headers(host=self.host), timeout=10)
+            rp = requests.get(url=full_url, headers=self._headers, proxies=self.cur_proxy, timeout=10)
+
+            if rp.status_code != 200:
+                self._log(logger, 'unexpected http status code %s' % rp.status_code, full_url, 'restricted')
+                self._need_retry()
         except Exception as e:
             self._log(logger, 'request error', full_url, str(e))
             self._need_retry()

@@ -6,6 +6,7 @@ import time
 import logging
 
 import retrying
+import requests
 import execjs
 
 from config import SPIDER_MAX_ATTEMPT_NUMBER
@@ -28,17 +29,26 @@ class Proxy(Plugin):
         self.url_template = 'http://www.kuaidaili.com/free/inha/{page}/'
         self.re_ip_pattern = re.compile(r">(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})</td>")
         self.re_port_pattern = re.compile(r">(\d{1,5})</td>")
-        self.cookie = None
+
+        self._cookie = None
+        self._headers = headers(host=self.host)
 
     @retrying.retry(stop_max_attempt_number=SPIDER_MAX_ATTEMPT_NUMBER)
     def _extract_proxy(self, page_num):
         try:
             full_url = self.url_template.format(page=page_num)
-            rp = self.session.get(url=full_url, headers=headers(host=self.host, cookie=self.cookie), timeout=10)
+            self._headers.update({'cookie': self._cookie})
+            rp = requests.get(url=full_url, headers=self._headers, proxies=self.cur_proxy, timeout=10)
+
             if rp.status_code == 521:
+                self._log(logger, 'unexpected http status code %s' % rp.status_code, full_url,
+                          'response javascript code')
                 self._set_cookies(rp.text)
-                self._log(logger, 'extract data error', full_url, 'response javascript code')
                 self._need_retry(switch_proxy=False)
+
+            elif rp.status_code != 200:
+                self._log(logger, 'unexpected http status code %s' % rp.status_code, full_url, 'restricted')
+                self._need_retry()
         except Exception as e:
             self._log(logger, 'request error', full_url, str(e))
             self._need_retry()
@@ -77,7 +87,8 @@ class Proxy(Plugin):
             logger.error('execute javascript code failed, error: %s' % str(e))
             return
 
-        self.cookie = cookies_str
+        self._cookie = cookies_str
+        logger.info('set cookie succeed, cookie: %s' % self._cookie)
 
     def start(self):
         for page in range(1, 10):
