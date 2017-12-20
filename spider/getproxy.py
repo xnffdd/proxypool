@@ -62,7 +62,8 @@ class Plugin(object):
                 'switched spider plugin(%s) self proxy to Proxy(protocol: %s, host: %s, port: %s)' % (
                     self.name, _protocol, _host, _port))
             break
-        logger.info('spider plugin(%s) has no proxy available for switch' % self.name)
+        else:
+            logger.info('spider plugin(%s) has no proxy available for switch' % self.name)
 
     def _log(self, _logger, msg, url, error):
         _logger.error(
