@@ -2,7 +2,7 @@
 
 自建免费代理IP池
 
-## 功能
+## 系统功能
 
 - 自动爬取互联网上公开的免费代理IP（目前已支持西刺代理、快代理、IP181）
 - 周期性验证代理IP有效性
@@ -11,6 +11,33 @@
 ## 系统架构
 
 ![系统架构](https://raw.githubusercontent.com/lsdir/proxypool/master/image/architecture.png)
+
+## 项目源码结构
+- /db 数据库操作
+- /schedule 后台周期任务
+- /spider 爬虫
+- /util 通用工具
+- /web web服务
+- /log 日志存储文件夹
+- config.py 全局配置
+- main.py 启动入口
+
+## 部署运行
+
+- 下载整个项目
+- 安装Python3
+- 安装Python包
+```
+pip install -r requirements.txt
+```
+- 安装MySQL数据库
+- 初始化建表 db/proxy.sql
+- 修改配置文件 config.py
+- 运行 main.py
+```
+python main.py
+```
+
 
 ## HTTP接口
 
