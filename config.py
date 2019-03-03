@@ -37,4 +37,4 @@ CHECK_PROXY_HOUR_THRESHOL = 7 * 24  # 抓取时间在{VALID_PROXY_HOUR_THRESHOLD
 Web服务配置
 '''
 VALID_PROXY_HOUR_THRESHOLD = 1 * 24  # 验证时间在{VALID_PROXY_HOUR_THRESHOLD}（小时）内的代理鉴定为可用代理
-WEB_SERVER_HOST, WEB_SERVER_PORT = 'localhost', '9999'  # Local Web Service 提供可用代理服务
+WEB_SERVER_HOST, WEB_SERVER_PORT = 'localhost', 9999  # Local Web Service 提供可用代理服务
